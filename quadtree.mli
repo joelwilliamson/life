@@ -21,9 +21,6 @@ val insert : t -> p:Point.t -> t
 (** Check if the point has been added to the tree *)
 val contains : t -> Point.t -> bool
 
-(** Check if the point is inside the bounding box of the tree. *)
-val in_range : t -> Point.t -> bool
-
 (** Return a list of all the points in the tree *)
 val to_list : t -> Point.t list
 
