@@ -22,6 +22,12 @@ let big_tree_check_3 = make_bool_test "Tree Containment 3" (Quadtree.contains qt
 let big_tree_check_4 = make_bool_test "Tree Containment 4" (Quadtree.contains qt (0,0))
 let big_tree_check_neg_1 = make_false_test "Tree Non-Contain 1" (Quadtree.contains qt (1,0))
 let big_tree_check_neg_2 = make_false_test "Tree Non-Contain 2" (Quadtree.contains qt (4,5))
+let singleton_list = make_bool_test "Singleton to List" ((Quadtree.to_list qt) = [3,5])
+let empty_list = make_bool_test "Empty to List"
+		((Quadtree.to_list (Quadtree.empty (Aabb.create (3,4) (2,2)))) = [])
+let big_tree_list = make_bool_test "Big tree to List"
+		((Quadtree.to_list qt |> List.sort compare) =
+		List.sort compare [2,6;4,6;4,0;2,4;23,7;-6,2;0,0])
 
 let test_suite = "Quadtree Test Suite">:::[
 	single_test_1
