@@ -11,14 +11,27 @@ let qt = Quadtree.(empty (Aabb.create (3,5) (2,8))
 
 let single = Quadtree.singleton (Aabb.create (0,0) (1,1)) (3,5)
 
-let make_bool_test str test = str>::fun x -> assert_bool str test
+let make_bool_test str test  = str>::fun _ -> assert_bool str test
+let make_false_test str test = str>::fun _ -> assert_bool str (test |> not)
 
 let single_test_1 = make_bool_test "Single contains point" (Quadtree.contains single (3,5))
-let single_test_2 = make_bool_test "Single contains nothing else" ((Quadtree.contains single (5,3)) |> not)
+let single_test_2 = make_false_test "Single contains nothing else" (Quadtree.contains single (5,3))
+let big_tree_check_1 = make_bool_test "Tree Containment 1" (Quadtree.contains qt (2,6))
+let big_tree_check_2 = make_bool_test "Tree Containment 2" (Quadtree.contains qt (4,0))
+let big_tree_check_3 = make_bool_test "Tree Containment 3" (Quadtree.contains qt (23,7))
+let big_tree_check_4 = make_bool_test "Tree Containment 4" (Quadtree.contains qt (0,0))
+let big_tree_check_neg_1 = make_false_test "Tree Non-Contain 1" (Quadtree.contains qt (1,0))
+let big_tree_check_neg_2 = make_false_test "Tree Non-Contain 2" (Quadtree.contains qt (4,5))
 
 let test_suite = "Quadtree Test Suite">:::[
 	single_test_1
 	;single_test_2
+	;big_tree_check_1
+	;big_tree_check_2
+	;big_tree_check_3
+	;big_tree_check_4
+	;big_tree_check_neg_1
+	;big_tree_check_neg_2
 	]
 
 let () = run_test_tt_main test_suite
