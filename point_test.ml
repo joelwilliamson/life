@@ -11,7 +11,7 @@ let () =
 	and test_sub _ = assert_bool "Check subtraction" ((Point.sub p3 p4) = (Point.create (-4,-3)))
 	and test_as _ = assert_bool "Check add_sub" ((Point.addsub p2 p3) = (Point.create (4,4)))
 	and test_sa _ = assert_bool "Check sub_add" ((Point.subadd p1 p4) = (Point.create (-1,8)))
-	and test_convert _ = assert_bool "Check string conversion" ((Point.string_of_point p2) = "(5,6)")
+	and test_convert _ = assert_bool "Check string conversion" ((Point.to_string p2) = "(5,6)")
 
 	in let suite = "Test Suite">:::[
 		"Check x">::test_create_1
