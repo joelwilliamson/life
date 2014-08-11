@@ -1,4 +1,4 @@
-life
+Life
 ====
 
-The Game of Life
+The game of life
