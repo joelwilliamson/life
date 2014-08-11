@@ -24,3 +24,5 @@ val quadruple : t -> Direction.t -> t
 
 (** Return a tuple of the quarters of this box, ordered NW,NE,SE,SW *)
 val quadrants : t -> (t * t * t * t)
+
+val to_string : t -> string

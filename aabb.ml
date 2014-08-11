@@ -54,3 +54,7 @@ let quadrants bb =
 	and sw = (Point.x bb.center) - (Point.x half_dimension), (Point.y bb.center) - (Point.y half_dimension)
 	in ({center=nw;half_dimension},{center=ne;half_dimension},
 	{center=se;half_dimension},{center=sw;half_dimension})
+
+let to_string x =
+	"{center = "^(Point.to_string x.center)^
+	";half_dimension = "^(Point.to_string x.half_dimension)
