@@ -1,3 +1,6 @@
+*.native
+.*
+_build/
 *.annot
 *.cmo
 *.cma
