@@ -1,3 +1,5 @@
+Makefile
+utop_use.ml
 *.native
 .*
 _build/
