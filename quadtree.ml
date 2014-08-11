@@ -9,22 +9,19 @@ and t = Aabb.t * data
 
 let empty bb = (bb,Empty)
 
-let singleton bb p = (bb,Point p)
-
 let in_range (bb,_) p = Aabb.contains bb p
 
 let rec insert (bb,d) ~p:p =
 	let open Direction in
 	let generate_parent (bb,_ as qt) p =
-		print_endline ("Adding point p = "^(Point.to_string p)) ;
 		let new_bb = Aabb.(quadruple bb (dir_to_point bb p))
 		in let (nw,ne,se,sw) = Aabb.quadrants new_bb in
 		let new_d = match Aabb.dir_to_point bb p with
-			| NW -> print_endline "Point is to the NW" ; Node ((nw,Empty), (ne,Empty), qt, (sw,Empty))
-			| NE -> print_endline "Point is to the NE" ; Node ((nw,Empty), (ne,Empty), (se,Empty), qt)
-			| SE -> print_endline "Point is to the SE" ; Node (qt, (ne,Empty), (se,Empty), (sw,Empty))
-			| SW -> print_endline "Point is to the SW" ; Node ((nw,Empty), qt, (se,Empty), (sw,Empty))
-		in print_endline ("Generated parent with bb = " ^(Aabb.to_string new_bb)); (*failwith "Testing" ;*) (new_bb, new_d)
+			| NW -> Node ((nw,Empty), (ne,Empty), qt, (sw,Empty))
+			| NE -> Node ((nw,Empty), (ne,Empty), (se,Empty), qt)
+			| SE -> Node (qt, (ne,Empty), (se,Empty), (sw,Empty))
+			| SW -> Node ((nw,Empty), qt, (se,Empty), (sw,Empty))
+		in (new_bb, new_d)
 	in if in_range (bb,d) p
 	then  match d with
 		| Empty -> (bb, Point(p))
@@ -37,6 +34,10 @@ let rec insert (bb,d) ~p:p =
 		| Point p2 -> let (nw,ne,se,sw) = Aabb.quadrants bb 
 			in insert (insert (bb, Node ((nw,Empty), (ne,Empty), (se,Empty), (sw,Empty))) ~p:p) ~p:p2
 	else insert (generate_parent (bb,d) p) ~p:p
+
+let rec singleton bb p = if Aabb.contains bb p
+	then (bb,Point p)
+	else singleton (Aabb.quadruple bb (Aabb.dir_to_point bb p)) p
 
 let rec contains (bb,d) p =
 	(* If the point is out of range, we can do this in constant time *)
