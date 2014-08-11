@@ -53,11 +53,9 @@ let rec contains (bb,d) p =
 			| Direction.SW -> sw)
 			p
 
-let qt = empty (Aabb.create (3,5) (2,8))
-	|> insert ~p:(2,6)
-	|> insert ~p:(4,6)
-	|> insert ~p:(4,0)
-	|> insert ~p:(2,4)
-	|> insert ~p:(23,7)
-	|> insert ~p:(-6,2)
-	|> insert ~p:(0,0)
+let rec to_list (_,d) =
+	match d with
+	| Point p -> [p]
+	| Empty -> []
+	| Node (nw,ne,se,sw) ->
+		(to_list nw) @ (to_list ne) @ (to_list se) @ (to_list sw)
