@@ -23,6 +23,3 @@ val contains : t -> Point.t -> bool
 
 (** Return a list of all the points in the tree *)
 val to_list : t -> Point.t list
-
-(*(** Remove the given point from the tree. If the point isn't in the tree, do nothing *)
-val remove : t -> Point.t -> t *)
