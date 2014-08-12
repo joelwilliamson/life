@@ -7,7 +7,7 @@ type t = {
 
 let create center half_dimension =
 	let rec is_power_2 = function
-		| 0 -> false
+		| 0 -> true
 		| 1 -> true
 		| n -> (n%2 = 0) && is_power_2 (n/2) in
 	if (Point.x half_dimension < 0) || (Point.y half_dimension < 0)
@@ -17,10 +17,15 @@ let create center half_dimension =
 	else {center; half_dimension}
 
 let contains aabb (x,y) =
-	(Point.x aabb.center - Point.x aabb.half_dimension) <= x
-	&& x < (Point.x aabb.center + Point.x aabb.half_dimension)
-	&& (Point.y aabb.center - Point.y aabb.half_dimension) <= y
-	&& y < (Point.y aabb.center + Point.y aabb.half_dimension)
+	let contains_x  = if (Point.x aabb.half_dimension) = 0
+		then (Point.x aabb.center) = x
+		else (Point.x aabb.center - Point.x aabb.half_dimension) <= x
+			&& x < (Point.x aabb.center + Point.x aabb.half_dimension)
+	and contains_y = if (Point.y aabb.half_dimension) = 0
+		then (Point.y aabb.center) = y
+		else (Point.y aabb.center - Point.y aabb.half_dimension) <= y
+			&& y < (Point.y aabb.center + Point.y aabb.half_dimension)
+	in contains_x && contains_y
 	
 let intersect a b =
 	let x_d = (Point.x a.center) - (Point.x b.center) |> abs
@@ -30,8 +35,8 @@ let intersect a b =
 	in (x_d <= max_x) && (y_d <= max_y)
 	
 let dir_to_point aabb (x,y) =
-	let north = y > (Point.y aabb.center)
-	and east  = x > (Point.x aabb.center)
+	let north = y >= (Point.y aabb.center)
+	and east  = x >= (Point.x aabb.center)
 	in Direction.from_ne (north,east)
 
 let quadruple orig d =
