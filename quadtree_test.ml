@@ -9,6 +9,7 @@ let qt = Quadtree.(empty (Aabb.create (3,5) (8,8))
 	|> insert ~p:(-6,2)
 	|> insert ~p:(0,0)
 	|> insert ~p:(4,0)
+	|> insert ~p:(1,0)
 	)
 
 let single = Quadtree.singleton (Aabb.create (0,0) (1,1)) (3,5)
@@ -22,7 +23,7 @@ let big_tree_check_1 = make_bool_test "Tree Containment 1" (Quadtree.contains qt
 let big_tree_check_2 = make_bool_test "Tree Containment 2" (Quadtree.contains qt (4,0))
 let big_tree_check_3 = make_bool_test "Tree Containment 3" (Quadtree.contains qt (23,7))
 let big_tree_check_4 = make_bool_test "Tree Containment 4" (Quadtree.contains qt (0,0))
-let big_tree_check_neg_1 = make_false_test "Tree Non-Contain 1" (Quadtree.contains qt (1,0))
+let big_tree_check_neg_1 = make_false_test "Tree Non-Contain 1" (Quadtree.contains qt (-1,0))
 let big_tree_check_neg_2 = make_false_test "Tree Non-Contain 2" (Quadtree.contains qt (4,5))
 let singleton_list = make_bool_test "Singleton to List" ((Quadtree.to_list qt) = [3,5])
 let empty_list = make_bool_test "Empty to List"
