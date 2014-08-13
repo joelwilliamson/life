@@ -52,7 +52,9 @@ let quadruple orig d =
 	in {half_dimension; center}
 
 let quadrants bb =
-	let half_dimension = (Point.x bb.half_dimension)/2 , (Point.y bb.half_dimension)/2 in
+	let half_round_up n = (n/2) + (n%2) in
+	let half_dimension = half_round_up (Point.x bb.half_dimension),
+		half_round_up (Point.y bb.half_dimension) in
 	let nw = (Point.x bb.center) - (Point.x half_dimension), (Point.y bb.center) + (Point.y half_dimension)
 	and ne = (Point.x bb.center) + (Point.x half_dimension), (Point.y bb.center) + (Point.y half_dimension)
 	and se = (Point.x bb.center) + (Point.x half_dimension), (Point.y bb.center) - (Point.y half_dimension)
