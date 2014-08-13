@@ -1,9 +1,9 @@
 type t = (int * int)
 let create (x,y) = (x,y)
 
-let x (x,y) = x
+let x (x,_) = x
 
-let y (x,y) = y
+let y (_,y) = y
 
 let add (x1,y1) (x2,y2) = (x1+x2),(y1+y2)
 
