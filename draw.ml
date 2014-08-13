@@ -4,10 +4,10 @@
 
 open Core.Std
 
-let point (x,y) =
-	let x = x * 5 + 500
-	and y = y * 5 + 500 in
-	Graphics.fill_rect x y 5 5
+let point scale (x,y) =
+	let x = x * scale + 500
+	and y = y * scale + 500 in
+	Graphics.fill_rect x y scale scale
 
-let quadtree t =
-	List.iter ~f:point (Quadtree.to_list t)
+let quadtree scale t =
+	List.iter ~f:(point scale) (Quadtree.to_list t)

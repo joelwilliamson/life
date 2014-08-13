@@ -1,3 +1,3 @@
-val point : Point.t -> unit
+val point : int -> Point.t -> unit
 
-val quadtree : Quadtree.t -> unit
+val quadtree : int -> Quadtree.t -> unit
