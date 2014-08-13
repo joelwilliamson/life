@@ -1,3 +1,19 @@
+(* The current algorithm uses the quadtree as a data store with log(N) lookup
+ * that can handle arbitrarily large fields of sparse data. Since each cell
+ * is stored near its neighbours in the tree, we can get O(1) lookups by making
+ * the decision whether it lives or dies while iterating through the tree. For
+ * any given subtree, we can determine whether points within it
+ *	a) are live
+ *	b) are dead
+ *	c) need x more live neighbours to be live
+ * This will entail having a function with the following signature:
+ *	step : rules -> Qt.t -> (Qt.t * (Point.t * int) list)
+ *
+ * With patterns that shrink (or travel) by a substantial amount, this can lead
+ * to several (possibly many) layer of the tree that are essentially empty. As
+ * such, a compaction step should be added (maybe once every few iterations) to
+ * prune the tree.
+ *)
 open Core.Std
 
 module Qt = Quadtree
