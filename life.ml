@@ -45,7 +45,7 @@ let advance_draw s =
 	Graphics.set_color 0xFFFFFF ;
 	Graphics.fill_rect 0 0 1000 1000 ;
 	Graphics.set_color 0xFF ;
-	Draw.quadtree s ;
+	Draw.quadtree 1 s ;
 	Unix.sleep 0 ;
 	step r s
 
