@@ -8,6 +8,7 @@ let qt = Quadtree.(empty (Aabb.create (3,5) (8,8))
 	|> insert ~p:(23,7)
 	|> insert ~p:(-6,2)
 	|> insert ~p:(0,0)
+	|> insert ~p:(4,0)
 	)
 
 let single = Quadtree.singleton (Aabb.create (0,0) (1,1)) (3,5)
