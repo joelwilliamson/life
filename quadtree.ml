@@ -11,7 +11,7 @@ let empty bb = (bb,Empty)
 
 let in_range (bb,_) p = Aabb.contains bb p
 
-let rec insert (bb,d) ~p:p =
+let rec insert (bb,d as qt) ~p:p =
 	let open Direction in
 	let generate_parent (bb,_ as qt) p =
 		let new_bb = Aabb.(quadruple bb (dir_to_point bb p))
@@ -31,7 +31,8 @@ let rec insert (bb,d) ~p:p =
 			| SE -> Node (nw, ne, insert se ~p:p, sw)
 			| SW -> Node (nw, ne, se, insert sw ~p:p)
 			)
-		| Point p2 -> let (nw,ne,se,sw) = Aabb.quadrants bb 
+		| Point p2 -> if p2=p then qt
+			else let (nw,ne,se,sw) = Aabb.quadrants bb 
 			in insert (insert (bb, Node ((nw,Empty), (ne,Empty), (se,Empty), (sw,Empty))) ~p:p) ~p:p2
 	else insert (generate_parent (bb,d) p) ~p:p
 
