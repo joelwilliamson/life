@@ -15,4 +15,4 @@ val step : rules -> Quadtree.t -> Quadtree.t
 val advance_draw : rules -> int -> Quadtree.t -> Quadtree.t
 
 (** Draw many states, each following the previous, at the given scale **)
-val draw_loop : rules -> int -> Quadtree.t -> 'a
+val draw_loop : rules -> int -> int -> Quadtree.t -> 'a

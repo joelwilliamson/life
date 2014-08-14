@@ -61,21 +61,9 @@ let advance_draw r scale s =
 	Graphics.fill_rect 0 0 1000 1000 ;
 	Graphics.set_color 0xFF ;
 	Draw.quadtree scale s ;
-	Unix.sleep 0 ;
 	step r s
 
-let rec draw_loop r scale s =
-	advance_draw r scale s |> (draw_loop r scale)
-
-let () =
-	let r = { born = [3]; stay_alive = [2;3]} in
-	Graphics.open_graph " 1000x1000" ;
-	Graphics.set_color 0x00FF00 ;
-	let state = Quadtree.(empty (Aabb.create (0,0) (128,128))
-		|> insert ~p:(0,1)
-		|> insert ~p:(1,1)
-		|> insert ~p:(0,0)
-		|> insert ~p:(-1,0)
-		|> insert ~p:(0,-1)
-		) in
-	draw_loop r 1 state
+let rec draw_loop r scale delay s =
+	let next_state = advance_draw r scale s in
+	Unix.sleep delay ;
+	draw_loop r scale delay next_state
