@@ -13,4 +13,4 @@ let addsub (x1,y1) (x2,y2) = (x1+x2),(y1-y2)
 
 let subadd (x1,y1) (x2,y2) = (x1-x2),(y1+y2)
 
-let to_string (x,y) = "("^(string_of_int x)^","^(string_of_int y)^")"
+let to_string (x,y) = (string_of_int x)^","^(string_of_int y)
