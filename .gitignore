@@ -1,3 +1,4 @@
+*.data
 Makefile
 utop_use.ml
 *.native
