@@ -5,8 +5,8 @@
 open Core.Std
 
 let point scale (x,y) =
-	let x = x * scale + 500
-	and y = y * scale + 500 in
+	let x = x * scale + (Graphics.size_x () /2)
+	and y = y * scale + (Graphics.size_y () /2) in
 	Graphics.fill_rect x y scale scale
 
 let quadtree scale t =

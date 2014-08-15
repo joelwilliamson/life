@@ -56,7 +56,7 @@ let step r s =
 
 let advance_draw r scale s =
 	Graphics.set_color 0xFFFFFF ;
-	Graphics.fill_rect 0 0 1000 1000 ;
+	Graphics.fill_rect 0 0 (Graphics.size_x ()) (Graphics.size_y ()) ;
 	Graphics.set_color 0xFF ;
 	Draw.quadtree scale s ;
 	step r s
