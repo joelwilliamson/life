@@ -29,3 +29,5 @@ val to_list : t -> Point.t list
   * checking two trees for equality
   **)
 val to_string : t -> string
+
+val of_string : string -> t

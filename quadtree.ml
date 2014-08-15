@@ -65,3 +65,11 @@ let to_string qt =
 	to_list qt
 	|> List.sort ~cmp:compare
 	|> List.to_string ~f:Point.to_string
+
+let of_string s =
+	let s = String.drop_prefix s 1
+	in String.drop_suffix s 1 (* Drop the enclosing braces *)
+	|> String.split ~on:' '
+	|> List.map ~f:Point.of_string
+	|> List.fold ~init:(empty (Aabb.create (0,0) (256,256)))
+		~f:(fun acc x -> insert acc ~p:x)
