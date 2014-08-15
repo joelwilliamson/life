@@ -18,14 +18,6 @@ let spec =
 	+> flag "--steps" (optional_with_default 100 int) ~doc:"steps Simulate this many steps in write mode"
 	+> anon ("filename" %: file)
 
-let state = Quadtree.(empty (Aabb.create (0,0) (128,128))
-	|> insert ~p:(0,1)
-	|> insert ~p:(1,1)
-	|> insert ~p:(0,0)
-	|> insert ~p:(-1,0)
-	|> insert ~p:(0,-1))
-
-
 let command =
 	Command.basic
 		~summary:"Simulate the game of life"
