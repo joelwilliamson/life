@@ -68,4 +68,6 @@ let rec draw_loop r scale delay s =
 
 let rec dump oc r steps state =
 	Out_channel.output_lines oc [Quadtree.to_string state] ;
-	dump oc r (steps - 1) (step r state)
+	match steps with
+		| 0 -> ()
+		| steps -> dump oc r (steps - 1) (step r state)
