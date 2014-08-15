@@ -16,6 +16,7 @@ let spec =
 	+> flag "--t" (optional_with_default 1 int) ~doc:"delay Time between frames"
 	+> flag "--write-to-file" (optional file) ~doc:"dumpfile Write the simulation to file"
 	+> flag "--steps" (optional_with_default 100 int) ~doc:"steps Simulate this many steps in write mode"
+	+> anon ("filename" %: file)
 
 let state = Quadtree.(empty (Aabb.create (0,0) (128,128))
 	|> insert ~p:(0,1)
@@ -30,7 +31,8 @@ let command =
 		~summary:"Simulate the game of life"
 		~readme:(fun () -> "More detailed info")
 		spec
-		(fun scale born survive delay outfile steps () ->
+		(fun scale born survive delay outfile steps filename () ->
+			let state = In_channel.create filename |> Life.from_file in 
 			match outfile with
 			| None ->
 				Graphics.open_graph " 1000x1000" ;
