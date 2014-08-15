@@ -19,3 +19,6 @@ val draw_loop : rules -> int -> int -> Quadtree.t -> 'a
 
 (** Run the simulation for a given number of steps, outputting one step per line **)
 val dump: out_channel -> rules -> int -> Quadtree.t -> unit
+
+(** Get a state from the first line of an input channel **)
+val from_file : in_channel -> Quadtree.t

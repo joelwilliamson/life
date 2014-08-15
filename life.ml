@@ -71,3 +71,9 @@ let rec dump oc r steps state =
 	match steps with
 		| 0 -> ()
 		| steps -> dump oc r (steps - 1) (step r state)
+
+let from_file ic =
+	let first_line = In_channel.input_line ic in
+	match first_line with
+	| None -> Quadtree.empty (Aabb.create (0,0) (256,256))
+	| Some line -> Quadtree.of_string line
