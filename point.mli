@@ -23,3 +23,6 @@ val subadd : t -> t -> t
 
 (** Convert the point to a string *)
 val to_string : t -> string
+
+(** Convert a string to a point **)
+val of_string : string -> t
