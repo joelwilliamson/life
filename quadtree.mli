@@ -23,3 +23,9 @@ val contains : t -> Point.t -> bool
 
 (** Return a list of all the points in the tree *)
 val to_list : t -> Point.t list
+
+(** Convert the tree to a string. The string is a sorted list of the points in
+  * the tree. This is a normalized representation, so it is suitable for
+  * checking two trees for equality
+  **)
+val to_string : t -> string

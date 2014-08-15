@@ -12,6 +12,8 @@ let qt = Quadtree.(empty (Aabb.create (3,5) (8,8))
 	|> insert ~p:(1,0)
 	)
 
+let qt_as_string = "(-6,2 0,0 1,0 2,4 2,6 4,0 4,6 23,7)"
+
 let single = Quadtree.singleton (Aabb.create (0,0) (1,1)) (3,5)
 
 let make_bool_test str test  = str>::fun _ -> assert_bool str test
@@ -31,6 +33,7 @@ let empty_list = make_bool_test "Empty to List"
 let big_tree_list = make_bool_test "Big tree to List"
 		((Quadtree.to_list qt |> List.sort compare) =
 		List.sort compare [2,6;4,6;4,0;2,4;23,7;-6,2;0,0])
+let to_string_test = make_bool_test "QT to string" ((Quadtree.to_string qt)=qt_as_string)
 
 let test_suite = "Quadtree Test Suite">:::[
 	single_test_1
@@ -41,6 +44,7 @@ let test_suite = "Quadtree Test Suite">:::[
 	;big_tree_check_4
 	;big_tree_check_neg_1
 	;big_tree_check_neg_2
+	;to_string_test
 	]
 
 let () = run_test_tt_main test_suite

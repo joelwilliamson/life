@@ -60,3 +60,8 @@ let rec to_list (_,d) =
 	| Empty -> []
 	| Node (nw,ne,se,sw) ->
 		(to_list nw) @ (to_list ne) @ (to_list se) @ (to_list sw)
+
+let to_string qt =
+	to_list qt
+	|> List.sort ~cmp:compare
+	|> List.to_string ~f:Point.to_string
