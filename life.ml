@@ -54,17 +54,17 @@ let step r s =
 	List.fold (stay_alive @ born) ~init:(Quadtree.empty (Aabb.create (0,0) (16,16)))
 		~f:(fun acc x -> Quadtree.insert acc ~p:x)
 
-let advance_draw r scale s =
-	Graphics.set_color 0xFFFFFF ;
+let advance_draw r scale fg bg s =
+	Graphics.set_color (Color.int_of_color bg) ;
 	Graphics.fill_rect 0 0 (Graphics.size_x ()) (Graphics.size_y ()) ;
-	Graphics.set_color 0xFF ;
+	Graphics.set_color (Color.int_of_color fg) ;
 	Draw.quadtree scale s ;
 	step r s
 
-let rec draw_loop r scale delay s =
-	let next_state = advance_draw r scale s in
+let rec draw_loop r scale delay fg bg s =
+	let next_state = advance_draw r scale fg bg s in
 	Unix.sleep delay ;
-	draw_loop r scale delay next_state
+	draw_loop r scale delay fg bg next_state
 
 let rec dump oc r steps state =
 	Out_channel.output_lines oc [Quadtree.to_string state] ;

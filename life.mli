@@ -12,10 +12,10 @@ type rules = {
 val step : rules -> Quadtree.t -> Quadtree.t
 
 (** Draw the current state at the given scale and return the next one **)
-val advance_draw : rules -> int -> Quadtree.t -> Quadtree.t
+val advance_draw : rules -> int -> Color.t -> Color.t -> Quadtree.t -> Quadtree.t
 
 (** Draw many states, each following the previous, at the given scale **)
-val draw_loop : rules -> int -> int -> Quadtree.t -> 'a
+val draw_loop : rules -> int -> int -> Color.t -> Color.t -> Quadtree.t -> 'a
 
 (** Run the simulation for a given number of steps, outputting one step per line **)
 val dump: out_channel -> rules -> int -> Quadtree.t -> unit
