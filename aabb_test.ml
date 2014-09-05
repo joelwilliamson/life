@@ -34,6 +34,9 @@ let zero_length_interval_1 _ = assert_bool "Horizontal interval contains origin"
 let zero_length_interval_2 _ = assert_bool "Vertical interval contains origin"
 	((Aabb.contains zero_v (0,0)) && (Aabb.contains zero_v (0,-1)))
 
+let interior_1 _ = assert_bool "origin is not interior to b1" (not (Aabb.is_interior b1 (0,0)))
+let interior_2 _ = assert_bool "center is interior to box" (Aabb.is_interior b1 (2,2))
+
 
 let () =
 	 run_test_tt_main ("Aabb Test Suite">:::[
@@ -51,4 +54,6 @@ let () =
 		;"quadrants2">::quadrant_dir
 		;"zero_size1">::zero_length_interval_1
 		;"zero_size2">::zero_length_interval_2
+		;"interior_1">::interior_1
+		;"interior_2">::interior_2
 		])
