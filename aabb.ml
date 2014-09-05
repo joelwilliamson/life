@@ -27,7 +27,7 @@ let contains aabb (x,y) =
 			&& y < (Point.y aabb.center + Point.y aabb.half_dimension)
 	in contains_x && contains_y
 
-let is_interior aabb p =
+let is_interior aabb (x,y) =
 	let contains_x  = if (Point.x aabb.half_dimension) = 0
 		then false
 		else (Point.x aabb.center - Point.x aabb.half_dimension) <= (x-1)
