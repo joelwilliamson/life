@@ -10,12 +10,15 @@ function run_test {
 	return
 	}
 
-for stem in $(cat full_length_tests) ; do
-	if run_test ${stem} ; then
-		echo -n ".";
-	else
-		echo "${stem} failed";
-	fi;
-done
+function test_loop {
+	for stem in $(cat full_length_tests) ; do
+		if run_test ${stem} ; then
+			echo -n . ; # No-op
+		else
+			echo "${stem} failed";
+		fi;
+	done
+	}
 
+test_loop
 echo
