@@ -26,6 +26,18 @@ let contains aabb (x,y) =
 		else (Point.y aabb.center - Point.y aabb.half_dimension) <= y
 			&& y < (Point.y aabb.center + Point.y aabb.half_dimension)
 	in contains_x && contains_y
+
+let is_interior aabb p =
+	let contains_x  = if (Point.x aabb.half_dimension) = 0
+		then false
+		else (Point.x aabb.center - Point.x aabb.half_dimension) <= (x-1)
+			&& (x+1) < (Point.x aabb.center + Point.x aabb.half_dimension)
+	and contains_y = if (Point.y aabb.half_dimension) = 0
+		then false
+		else (Point.y aabb.center - Point.y aabb.half_dimension) <= (y-1)
+			&& (y+1) < (Point.y aabb.center + Point.y aabb.half_dimension)
+	in contains_x && contains_y
+	
 	
 let intersect a b =
 	let x_d = (Point.x a.center) - (Point.x b.center) |> abs

@@ -12,6 +12,9 @@ val create : Point.t -> Point.t -> t
 (** Check if the given point is in the AABB *)
 val contains : t -> Point.t -> bool
 
+(** Check if a point is in the interior of the AABB. This is equivalent to
+ ** checking if all its neighbours are contained by the BB *)
+
 (** Check if the two boxes intersect *)
 val intersect : t -> t -> bool
 
