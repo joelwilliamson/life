@@ -6,6 +6,7 @@
 type rules = {
 	born : int list ;
 	stay_alive : int list ;
+	dies : int list;
 	} ;;
 
 (** Create the next state given the current state, under the given rules **)
