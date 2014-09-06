@@ -27,13 +27,14 @@ end);;
 type rules = {
 	born : int list ;
 	stay_alive : int list ;
+	dies : int list ;
 	} ;;
 
 let neighbours (x,y) = [
 	x-1,y+1;x+0,y+1;x+1,y+1;
 	x-1,y+0;       x+1,y+0;
 	x-1,y-1;x+0,y-1;x+1,y-1]
-
+(*
 let stays_alive r s p =
 	let live_neighbours = List.filter (neighbours p) ~f:(Qt.contains s)
 	in List.mem r.stay_alive (List.length live_neighbours)	
@@ -41,19 +42,42 @@ let stays_alive r s p =
 let born r s p =
 	let live_neighbours = List.filter (neighbours p) ~f:(Qt.contains s) in
 	List.mem r.born (List.length live_neighbours)
+*)
 
-let step r s =
-	let live_points = Qt.to_list s in
-	let neighbours = List.fold live_points ~init:[] ~f:(fun acc x ->
-			(neighbours x) @ acc)
-		|> Set.of_list ~comparator:Point_comp.comparator in
-	let neighbours = Set.diff neighbours  (Set.of_list ~comparator:Point_comp.comparator live_points)
-		|> Set.to_list in
-	let stay_alive = List.filter live_points ~f:(stays_alive r s)
-	and born = List.filter neighbours ~f:(born r s) in
-	List.fold (stay_alive @ born) ~init:(Quadtree.empty (Aabb.create (0,0) (16,16)))
-		~f:(fun acc x -> Quadtree.insert acc ~p:x)
+(* step_aux takes rules and a quadtree, and advances the state by one step.
+ * Since any points on the edge of the bounding box have an unknown number of
+ * neighbours, we also return a pair of lists, one containing dead cells that
+ * might come alive, and one containing live cells that might stay alive.
+ *)
+let rec step_aux (r:rules) ((bb,data) as s:Qt.t) : (Qt.t * Point.t list) =
+	(* This function currently misbehaves because it doesn't distinguish
+	points that might be born from those already alive. *)
+	match data with
+	| Point p -> (Qt.empty bb),List.append (if (Aabb.is_interior bb p) then [] else [p])
+			(neighbours p |> List.filter ~f:(fun p -> not @@ (Aabb.is_interior bb p)))
+	| Empty -> (Qt.empty bb),[]
+	| Node (nw,ne,se,sw) ->
+		let (nw',nw_rem) = step_aux r nw
+		and (ne',ne_rem) = step_aux r ne
+		and (se',se_rem) = step_aux r se
+		and (sw',sw_rem) = step_aux r sw
+		in let rem = List.fold [nw_rem;ne_rem;se_rem] ~init:sw_rem ~f:List.unordered_append
+		in let point_list = List.map rem ~f:(fun p ->
+			let n = neighbours p |> List.filter ~f:(Qt.contains s) |> List.length
+			in print_endline ((Point.to_string p) ^ " has " ^ (string_of_int n) ^ " neighbours.") ;
+			(p,n) )
+		in let (live_points,maybe_point) =
+			List.partition_tf point_list ~f:(fun (_,n) -> List.mem r.stay_alive n)
+		in let maybe_point' = List.filter maybe_point ~f:(fun (_,n) -> not @@ List.mem r.dies n)
+			|> List.map ~f:fst
+		in (List.fold	live_points
+				~init:(bb,Qt.Node (nw',ne',se',sw'))
+				~f:(fun qt (p,_) -> Qt.insert qt ~p:p))
+			,maybe_point'
 
+(* Throw away any maybe points at the end. Maybe compaction should go here? *)
+let step r s = let (result,_) = step_aux r s in result
+	
 let advance_draw r scale fg bg s =
 	Graphics.set_color (Color.int_of_color bg) ;
 	Graphics.fill_rect 0 0 (Graphics.size_x ()) (Graphics.size_y ()) ;
