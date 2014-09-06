@@ -25,6 +25,17 @@ let spec =
 	+> flag "--steps" (optional_with_default 100 int) ~doc:"steps Simulate this many steps in write mode"
 	+> anon ("filename" %: file)
 
+let list_sub l1 l2 =
+	List.filter l1 ~f:((List.mem l2) >> not)
+
+let make_rule born stay_alive : Life.rules=
+	{born;
+	stay_alive;
+	dies = list_sub [0;1;2;3;4;5;6;7] stay_alive}
+
+let print_list l =
+	List.iter l ~f:(fun x -> print_int x ; print_char ';')
+
 let command =
 	Command.basic
 		~summary:"Simulate the game of life"
@@ -35,10 +46,13 @@ let command =
 			match outfile with
 			| None ->
 				Graphics.open_graph " 1000x1000" ;
-				Life.draw_loop {born;stay_alive=survive} scale delay fg bg state
+				print_string "Dies on: " ;
+				print_list (make_rule born survive).dies ;
+				print_newline () ;
+				Life.draw_loop (make_rule born survive)	scale delay fg bg state
 			| Some filename ->
 				let oc = Out_channel.create filename in
-				Life.dump oc {born;stay_alive=survive} steps state)
+				Life.dump oc (make_rule born survive) steps state)
 
 let () =
 	Command.run ~version:"1.0" command
